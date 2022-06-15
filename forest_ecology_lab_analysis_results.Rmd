@@ -1,0 +1,44 @@
+---
+title: "Forest Lab "
+author: "Cindy J. Pang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readxl)
+library(dplyr)
+library(knitr)
+
+basal_area_dat <- read_xlsx("forest_data.xlsx", sheet = "Basal Area")%>%
+  rename(dbh = "DBH (cm)",
+         basal_area = "Basal Area, m2/ha")%>%
+  mutate(Species = ifelse(Species == "pignut hickory", "Pignut Hickory", Species),
+         Species = ifelse(Species == "Red maple", "Red Maple", Species))
+
+basal_species_summary <- basal_area_dat %>%
+  group_by(Species)%>%
+  summarize(sum_ba = sum(basal_area))
+
+basal_plot_summary <- basal_area_dat %>%
+  group_by(Plot)%>%
+  summarize(plot_sum = sum(basal_area))
+```
+
+## Basal Area 
+
+
+
+```{r species summary}
+kable(basal_species_summary, caption = "Basal Area by Species")
+```
+
+## Including Plots
+
+
+
+```{r pressure, echo=FALSE}
+
+```
+
+

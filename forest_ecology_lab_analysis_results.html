@@ -366,79 +366,157 @@ pre code {
 </div>
 
 
-<div id="basal-area" class="section level2">
-<h2>Basal Area</h2>
-<pre class="r"><code>kable(basal_species_summary, caption = &quot;Basal Area by Species&quot;)</code></pre>
-<table>
-<caption>Basal Area by Species</caption>
-<thead>
-<tr class="header">
-<th align="left">Species</th>
-<th align="right">sum_ba</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">American Beech</td>
-<td align="right">32.980910</td>
-</tr>
-<tr class="even">
-<td align="left">Black Cherry</td>
-<td align="right">0.785400</td>
-</tr>
-<tr class="odd">
-<td align="left">Blackgum</td>
-<td align="right">12.079452</td>
-</tr>
-<tr class="even">
-<td align="left">Dogwood</td>
-<td align="right">0.125664</td>
-</tr>
-<tr class="odd">
-<td align="left">Mockernut Hickory</td>
-<td align="right">223.108578</td>
-</tr>
-<tr class="even">
-<td align="left">Pignut Hickory</td>
-<td align="right">24.906997</td>
-</tr>
-<tr class="odd">
-<td align="left">Post Oak</td>
-<td align="right">2.717484</td>
-</tr>
-<tr class="even">
-<td align="left">Red Maple</td>
-<td align="right">191.749519</td>
-</tr>
-<tr class="odd">
-<td align="left">Red Oak</td>
-<td align="right">177.675151</td>
-</tr>
-<tr class="even">
-<td align="left">Short Leaf Pine</td>
-<td align="right">501.925578</td>
-</tr>
-<tr class="odd">
-<td align="left">Sourwood</td>
-<td align="right">86.158380</td>
-</tr>
-<tr class="even">
-<td align="left">Southern Sugar Maple</td>
-<td align="right">11.466840</td>
-</tr>
-<tr class="odd">
-<td align="left">White Oak</td>
-<td align="right">2281.447591</td>
-</tr>
-<tr class="even">
-<td align="left">Yellow Poplar</td>
-<td align="right">461.854470</td>
-</tr>
-</tbody>
-</table>
+<div id="basal-area" class="section level3">
+<h3>Basal Area</h3>
+<pre class="r"><code>basal_species_summary &lt;- basal_area_dat %&gt;%
+  group_by(Species)%&gt;%
+  summarize(sum_ba = sum(basal_area))
+
+basal_species_by_plot &lt;- basal_area_dat %&gt;%
+  group_by(Plot, Species)%&gt;%
+  summarise(sum_ba = sum(basal_area))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Plot&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>total_basal_area_p1 &lt;- sum(filter(basal_species_by_plot, Plot == 1)$sum_ba)
+
+total_basal_area_p2 &lt;- sum(filter(basal_species_by_plot, Plot == 2)$sum_ba)
+
+basal_species_by_plot &lt;- basal_species_by_plot%&gt;%
+  mutate(total_BA = ifelse(Plot == 1, total_basal_area_p1, total_basal_area_p2),
+    RA = (sum_ba/total_BA)*100)
+
+basal_species_by_plot</code></pre>
+<pre><code>## # A tibble: 22 x 5
+## # Groups:   Plot [2]
+##     Plot Species             sum_ba total_BA      RA
+##    &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+##  1     1 Black Cherry         0.785    1658.  0.0474
+##  2     1 Blackgum             2.27     1658.  0.137 
+##  3     1 Mockernut Hickory   47.3      1658.  2.85  
+##  4     1 Pignut Hickory       9.94     1658.  0.599 
+##  5     1 Post Oak             2.72     1658.  0.164 
+##  6     1 Red Maple           38.6      1658.  2.33  
+##  7     1 Red Oak              3.46     1658.  0.209 
+##  8     1 Short Leaf Pine    349.       1658. 21.0   
+##  9     1 Sourwood            48.7      1658.  2.94  
+## 10     1 White Oak         1156.       1658. 69.7   
+## # ... with 12 more rows</code></pre>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
+<div id="density" class="section level3">
+<h3>Density</h3>
+<pre class="r"><code>density_table &lt;- table(basal_area_dat$Plot, basal_area_dat$Species)
+
+ A &lt;- 100
+ 
+ density_table &lt;- as.data.frame(density_table)%&gt;%
+  rename(Plot = Var1,
+         Species = Var2)%&gt;%
+  mutate(di = Freq*10000/A)
+
+ density_sum_plot1 &lt;- sum(filter(density_table, Plot == 1)$di)
+  density_sum_plot2 &lt;- sum(filter(density_table, Plot == 2)$di)
+ 
+  density_table &lt;- density_table%&gt;%
+    mutate(total_plot_density = ifelse(Plot == 1, density_sum_plot1, density_sum_plot2),
+           RD = (di/total_plot_density)*100)
+  
+  density_table</code></pre>
+<pre><code>##    Plot              Species Freq   di total_plot_density         RD
+## 1     1       American Beech    0    0              11900  0.0000000
+## 2     2       American Beech    9  900              11300  7.9646018
+## 3     1         Black Cherry    1  100              11900  0.8403361
+## 4     2         Black Cherry    0    0              11300  0.0000000
+## 5     1             Blackgum    1  100              11900  0.8403361
+## 6     2             Blackgum    2  200              11300  1.7699115
+## 7     1              Dogwood    0    0              11900  0.0000000
+## 8     2              Dogwood    1  100              11300  0.8849558
+## 9     1    Mockernut Hickory   10 1000              11900  8.4033613
+## 10    2    Mockernut Hickory    9  900              11300  7.9646018
+## 11    1       Pignut Hickory    3  300              11900  2.5210084
+## 12    2       Pignut Hickory    2  200              11300  1.7699115
+## 13    1             Post Oak    2  200              11900  1.6806723
+## 14    2             Post Oak    0    0              11300  0.0000000
+## 15    1            Red Maple   10 1000              11900  8.4033613
+## 16    2            Red Maple   12 1200              11300 10.6194690
+## 17    1              Red Oak    1  100              11900  0.8403361
+## 18    2              Red Oak    5  500              11300  4.4247788
+## 19    1      Short Leaf Pine   27 2700              11900 22.6890756
+## 20    2      Short Leaf Pine    6  600              11300  5.3097345
+## 21    1             Sourwood   11 1100              11900  9.2436975
+## 22    2             Sourwood   17 1700              11300 15.0442478
+## 23    1 Southern Sugar Maple    0    0              11900  0.0000000
+## 24    2 Southern Sugar Maple    6  600              11300  5.3097345
+## 25    1            White Oak   53 5300              11900 44.5378151
+## 26    2            White Oak   27 2700              11300 23.8938053
+## 27    1        Yellow Poplar    0    0              11900  0.0000000
+## 28    2        Yellow Poplar   17 1700              11300 15.0442478</code></pre>
+<pre class="r"><code>#kable(cont_table, caption = &quot;Raw Cross-tabulation&quot;)</code></pre>
+<pre class="r"><code>master_tbl &lt;- merge(basal_species_by_plot,
+                    density_table,
+                    by.x = c(&quot;Plot&quot;, &quot;Species&quot;), 
+                    by.y = c(&quot;Plot&quot;, &quot;Species&quot;),
+                    all = TRUE)%&gt;%
+  mutate(IV = (RA-RD)/2)
+  
+master_tbl</code></pre>
+<pre><code>##    Plot              Species      sum_ba total_BA           RA Freq   di
+## 1     1       American Beech          NA       NA           NA    0    0
+## 2     1         Black Cherry    0.785400 1658.425  0.047358183    1  100
+## 3     1             Blackgum    2.269806 1658.425  0.136865149    1  100
+## 4     1              Dogwood          NA       NA           NA    0    0
+## 5     1    Mockernut Hickory   47.324277 1658.425  2.853567314   10 1000
+## 6     1       Pignut Hickory    9.935310 1658.425  0.599081014    3  300
+## 7     1             Post Oak    2.717484 1658.425  0.163859313    2  200
+## 8     1            Red Maple   38.559213 1658.425  2.325049992   10 1000
+## 9     1              Red Oak    3.463614 1658.425  0.208849587    1  100
+## 10    1      Short Leaf Pine  348.741162 1658.425 21.028453980   27 2700
+## 11    1             Sourwood   48.743887 1658.425  2.939167230   11 1100
+## 12    1 Southern Sugar Maple          NA       NA           NA    0    0
+## 13    1            White Oak 1155.884961 1658.425 69.697748237   53 5300
+## 14    1        Yellow Poplar          NA       NA           NA    0    0
+## 15    2       American Beech   32.980910 2350.557  1.403110450    9  900
+## 16    2         Black Cherry          NA       NA           NA    0    0
+## 17    2             Blackgum    9.809646 2350.557  0.417332845    2  200
+## 18    2              Dogwood    0.125664 2350.557  0.005346137    1  100
+## 19    2    Mockernut Hickory  175.784301 2350.557  7.478410794    9  900
+## 20    2       Pignut Hickory   14.971687 2350.557  0.636942143    2  200
+## 21    2             Post Oak          NA       NA           NA    0    0
+## 22    2            Red Maple  153.190306 2350.557  6.517192008   12 1200
+## 23    2              Red Oak  174.211537 2350.557  7.411500544    5  500
+## 24    2      Short Leaf Pine  153.184416 2350.557  6.516941408    6  600
+## 25    2             Sourwood   37.414493 2350.557  1.591728857   17 1700
+## 26    2 Southern Sugar Maple   11.466840 2350.557  0.487835032    6  600
+## 27    2            White Oak 1125.562631 2350.557 47.884934418   27 2700
+## 28    2        Yellow Poplar  461.854470 2350.557 19.648725364   17 1700
+##    total_plot_density         RD         IV
+## 1               11900  0.0000000         NA
+## 2               11900  0.8403361 -0.3964890
+## 3               11900  0.8403361 -0.3517355
+## 4               11900  0.0000000         NA
+## 5               11900  8.4033613 -2.7748970
+## 6               11900  2.5210084 -0.9609637
+## 7               11900  1.6806723 -0.7584065
+## 8               11900  8.4033613 -3.0391557
+## 9               11900  0.8403361 -0.3157433
+## 10              11900 22.6890756 -0.8303108
+## 11              11900  9.2436975 -3.1522651
+## 12              11900  0.0000000         NA
+## 13              11900 44.5378151 12.5799666
+## 14              11900  0.0000000         NA
+## 15              11300  7.9646018 -3.2807457
+## 16              11300  0.0000000         NA
+## 17              11300  1.7699115 -0.6762893
+## 18              11300  0.8849558 -0.4398048
+## 19              11300  7.9646018 -0.2430955
+## 20              11300  1.7699115 -0.5664847
+## 21              11300  0.0000000         NA
+## 22              11300 10.6194690 -2.0511385
+## 23              11300  4.4247788  1.4933609
+## 24              11300  5.3097345  0.6036034
+## 25              11300 15.0442478 -6.7262595
+## 26              11300  5.3097345 -2.4109497
+## 27              11300 23.8938053 11.9955646
+## 28              11300 15.0442478  2.3022388</code></pre>
 </div>
 
 

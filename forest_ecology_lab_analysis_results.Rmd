@@ -9,6 +9,7 @@ output: html_document
 library(readxl)
 library(dplyr)
 library(knitr)
+library(gmodels)
 
 basal_area_dat <- read_xlsx("forest_data.xlsx", sheet = "Basal Area")%>%
   rename(dbh = "DBH (cm)",
@@ -16,29 +17,88 @@ basal_area_dat <- read_xlsx("forest_data.xlsx", sheet = "Basal Area")%>%
   mutate(Species = ifelse(Species == "pignut hickory", "Pignut Hickory", Species),
          Species = ifelse(Species == "Red maple", "Red Maple", Species))
 
+```
+
+### Basal Area 
+
+```{r species summary}
 basal_species_summary <- basal_area_dat %>%
   group_by(Species)%>%
   summarize(sum_ba = sum(basal_area))
 
+basal_species_by_plot <- basal_area_dat %>%
+  group_by(Plot, Species)%>%
+  summarise(sum_ba = sum(basal_area))
+
+total_basal_area_p1 <- sum(filter(basal_species_by_plot, Plot == 1)$sum_ba)
+
+total_basal_area_p2 <- sum(filter(basal_species_by_plot, Plot == 2)$sum_ba)
+
+basal_species_by_plot <- basal_species_by_plot%>%
+  mutate(total_BA = ifelse(Plot == 1, total_basal_area_p1, total_basal_area_p2),
+    RA = (sum_ba/total_BA)*100)
+
+basal_species_by_plot
+```
+
+
+
+```{r plot summary, include = FALSE}
+
+#sanity check 
 basal_plot_summary <- basal_area_dat %>%
   group_by(Plot)%>%
   summarize(plot_sum = sum(basal_area))
+kable(basal_plot_summary,col.names = c("Plot", "Basal Area (m^2/ha)"), caption = "Basal Area by Plot")
 ```
 
-## Basal Area 
+### Density 
 
+```{r species-plot crosstabulation}
+density_table <- table(basal_area_dat$Plot, basal_area_dat$Species)
 
+ A <- 100
+ 
+ density_table <- as.data.frame(density_table)%>%
+  rename(Plot = Var1,
+         Species = Var2)%>%
+  mutate(di = Freq*10000/A)
 
-```{r species summary}
-kable(basal_species_summary, caption = "Basal Area by Species")
+ density_sum_plot1 <- sum(filter(density_table, Plot == 1)$di)
+  density_sum_plot2 <- sum(filter(density_table, Plot == 2)$di)
+ 
+  density_table <- density_table%>%
+    mutate(total_plot_density = ifelse(Plot == 1, density_sum_plot1, density_sum_plot2),
+           RD = (di/total_plot_density)*100)
+  
+  density_table
+#kable(cont_table, caption = "Raw Cross-tabulation")
+ 
 ```
 
-## Including Plots
 
+```{r plot density in stems/ha, include = FALSE}
+#sanity check 
 
+density_sum <- density_table %>%
+  group_by(Plot)%>%
+  summarize(dn = sum(di))
 
-```{r pressure, echo=FALSE}
+kable(density_sum, caption = "Plot density in stems/ha", col.names = c("Plot", "Plot density (stems/ha)"))
 
+total_site_density = sum(density_sum$dn)  #D
+mean_plot_density = total_site_density/2
+```
+
+```{r combine}
+master_tbl <- merge(basal_species_by_plot,
+                    density_table,
+                    by.x = c("Plot", "Species"), 
+                    by.y = c("Plot", "Species"),
+                    all = TRUE)%>%
+  mutate(IV = (RA-RD)/2)
+  
+master_tbl
 ```
 
 

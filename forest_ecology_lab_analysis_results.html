@@ -383,24 +383,184 @@ total_basal_area_p2 &lt;- sum(filter(basal_species_by_plot, Plot == 2)$sum_ba)
 
 basal_species_by_plot &lt;- basal_species_by_plot%&gt;%
   mutate(total_BA = ifelse(Plot == 1, total_basal_area_p1, total_basal_area_p2),
-    RA = (sum_ba/total_BA)*100)
+    RBA = (sum_ba/total_BA)*100)
 
-basal_species_by_plot</code></pre>
-<pre><code>## # A tibble: 22 x 5
-## # Groups:   Plot [2]
-##     Plot Species             sum_ba total_BA      RA
-##    &lt;dbl&gt; &lt;chr&gt;                &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
-##  1     1 Black Cherry         0.785    1658.  0.0474
-##  2     1 Blackgum             2.27     1658.  0.137 
-##  3     1 Mockernut Hickory   47.3      1658.  2.85  
-##  4     1 Pignut Hickory       9.94     1658.  0.599 
-##  5     1 Post Oak             2.72     1658.  0.164 
-##  6     1 Red Maple           38.6      1658.  2.33  
-##  7     1 Red Oak              3.46     1658.  0.209 
-##  8     1 Short Leaf Pine    349.       1658. 21.0   
-##  9     1 Sourwood            48.7      1658.  2.94  
-## 10     1 White Oak         1156.       1658. 69.7   
-## # ... with 12 more rows</code></pre>
+kable(basal_species_by_plot, caption = &quot;BASAL AREA&quot;, col.names = c(&quot;Plot&quot;, &quot;Species&quot;, &quot;Basal Area (m2/ha)&quot;, &quot;Total Plot Basal Area (m2/ha)&quot;, &quot;Relative Abundance (%)&quot;), digits = 2)</code></pre>
+<table>
+<caption>BASAL AREA</caption>
+<colgroup>
+<col width="5%" />
+<col width="21%" />
+<col width="19%" />
+<col width="30%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Plot</th>
+<th align="left">Species</th>
+<th align="right">Basal Area (m2/ha)</th>
+<th align="right">Total Plot Basal Area (m2/ha)</th>
+<th align="right">Relative Abundance (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">Black Cherry</td>
+<td align="right">0.79</td>
+<td align="right">1658.43</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Blackgum</td>
+<td align="right">2.27</td>
+<td align="right">1658.43</td>
+<td align="right">0.14</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">Mockernut Hickory</td>
+<td align="right">47.32</td>
+<td align="right">1658.43</td>
+<td align="right">2.85</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Pignut Hickory</td>
+<td align="right">9.94</td>
+<td align="right">1658.43</td>
+<td align="right">0.60</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">Post Oak</td>
+<td align="right">2.72</td>
+<td align="right">1658.43</td>
+<td align="right">0.16</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Red Maple</td>
+<td align="right">38.56</td>
+<td align="right">1658.43</td>
+<td align="right">2.33</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">Red Oak</td>
+<td align="right">3.46</td>
+<td align="right">1658.43</td>
+<td align="right">0.21</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">Short Leaf Pine</td>
+<td align="right">348.74</td>
+<td align="right">1658.43</td>
+<td align="right">21.03</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">Sourwood</td>
+<td align="right">48.74</td>
+<td align="right">1658.43</td>
+<td align="right">2.94</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">White Oak</td>
+<td align="right">1155.88</td>
+<td align="right">1658.43</td>
+<td align="right">69.70</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">American Beech</td>
+<td align="right">32.98</td>
+<td align="right">2350.56</td>
+<td align="right">1.40</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Blackgum</td>
+<td align="right">9.81</td>
+<td align="right">2350.56</td>
+<td align="right">0.42</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">Dogwood</td>
+<td align="right">0.13</td>
+<td align="right">2350.56</td>
+<td align="right">0.01</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Mockernut Hickory</td>
+<td align="right">175.78</td>
+<td align="right">2350.56</td>
+<td align="right">7.48</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">Pignut Hickory</td>
+<td align="right">14.97</td>
+<td align="right">2350.56</td>
+<td align="right">0.64</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Red Maple</td>
+<td align="right">153.19</td>
+<td align="right">2350.56</td>
+<td align="right">6.52</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">Red Oak</td>
+<td align="right">174.21</td>
+<td align="right">2350.56</td>
+<td align="right">7.41</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Short Leaf Pine</td>
+<td align="right">153.18</td>
+<td align="right">2350.56</td>
+<td align="right">6.52</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">Sourwood</td>
+<td align="right">37.41</td>
+<td align="right">2350.56</td>
+<td align="right">1.59</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Southern Sugar Maple</td>
+<td align="right">11.47</td>
+<td align="right">2350.56</td>
+<td align="right">0.49</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">White Oak</td>
+<td align="right">1125.56</td>
+<td align="right">2350.56</td>
+<td align="right">47.88</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">Yellow Poplar</td>
+<td align="right">461.85</td>
+<td align="right">2350.56</td>
+<td align="right">19.65</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="density" class="section level3">
 <h3>Density</h3>
@@ -420,103 +580,721 @@ basal_species_by_plot</code></pre>
     mutate(total_plot_density = ifelse(Plot == 1, density_sum_plot1, density_sum_plot2),
            RD = (di/total_plot_density)*100)
   
-  density_table</code></pre>
-<pre><code>##    Plot              Species Freq   di total_plot_density         RD
-## 1     1       American Beech    0    0              11900  0.0000000
-## 2     2       American Beech    9  900              11300  7.9646018
-## 3     1         Black Cherry    1  100              11900  0.8403361
-## 4     2         Black Cherry    0    0              11300  0.0000000
-## 5     1             Blackgum    1  100              11900  0.8403361
-## 6     2             Blackgum    2  200              11300  1.7699115
-## 7     1              Dogwood    0    0              11900  0.0000000
-## 8     2              Dogwood    1  100              11300  0.8849558
-## 9     1    Mockernut Hickory   10 1000              11900  8.4033613
-## 10    2    Mockernut Hickory    9  900              11300  7.9646018
-## 11    1       Pignut Hickory    3  300              11900  2.5210084
-## 12    2       Pignut Hickory    2  200              11300  1.7699115
-## 13    1             Post Oak    2  200              11900  1.6806723
-## 14    2             Post Oak    0    0              11300  0.0000000
-## 15    1            Red Maple   10 1000              11900  8.4033613
-## 16    2            Red Maple   12 1200              11300 10.6194690
-## 17    1              Red Oak    1  100              11900  0.8403361
-## 18    2              Red Oak    5  500              11300  4.4247788
-## 19    1      Short Leaf Pine   27 2700              11900 22.6890756
-## 20    2      Short Leaf Pine    6  600              11300  5.3097345
-## 21    1             Sourwood   11 1100              11900  9.2436975
-## 22    2             Sourwood   17 1700              11300 15.0442478
-## 23    1 Southern Sugar Maple    0    0              11900  0.0000000
-## 24    2 Southern Sugar Maple    6  600              11300  5.3097345
-## 25    1            White Oak   53 5300              11900 44.5378151
-## 26    2            White Oak   27 2700              11300 23.8938053
-## 27    1        Yellow Poplar    0    0              11900  0.0000000
-## 28    2        Yellow Poplar   17 1700              11300 15.0442478</code></pre>
-<pre class="r"><code>#kable(cont_table, caption = &quot;Raw Cross-tabulation&quot;)</code></pre>
+kable(density_table, caption = &quot;DENSITY&quot;, col.names = c(&quot;Plot&quot;, &quot;Species&quot;, &quot;# Stems&quot;, &quot;Species Density (stems/ha)&quot;, &quot;Total Site Density (stems/ha)&quot;, &quot;Relative Density (%)&quot;), digits = 2)</code></pre>
+<table>
+<caption>DENSITY</caption>
+<colgroup>
+<col width="4%" />
+<col width="18%" />
+<col width="7%" />
+<col width="24%" />
+<col width="26%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Plot</th>
+<th align="left">Species</th>
+<th align="right"># Stems</th>
+<th align="right">Species Density (stems/ha)</th>
+<th align="right">Total Site Density (stems/ha)</th>
+<th align="right">Relative Density (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">American Beech</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">11900</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">American Beech</td>
+<td align="right">9</td>
+<td align="right">900</td>
+<td align="right">11300</td>
+<td align="right">7.96</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Black Cherry</td>
+<td align="right">1</td>
+<td align="right">100</td>
+<td align="right">11900</td>
+<td align="right">0.84</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Black Cherry</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">11300</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Blackgum</td>
+<td align="right">1</td>
+<td align="right">100</td>
+<td align="right">11900</td>
+<td align="right">0.84</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Blackgum</td>
+<td align="right">2</td>
+<td align="right">200</td>
+<td align="right">11300</td>
+<td align="right">1.77</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Dogwood</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">11900</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Dogwood</td>
+<td align="right">1</td>
+<td align="right">100</td>
+<td align="right">11300</td>
+<td align="right">0.88</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Mockernut Hickory</td>
+<td align="right">10</td>
+<td align="right">1000</td>
+<td align="right">11900</td>
+<td align="right">8.40</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Mockernut Hickory</td>
+<td align="right">9</td>
+<td align="right">900</td>
+<td align="right">11300</td>
+<td align="right">7.96</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Pignut Hickory</td>
+<td align="right">3</td>
+<td align="right">300</td>
+<td align="right">11900</td>
+<td align="right">2.52</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Pignut Hickory</td>
+<td align="right">2</td>
+<td align="right">200</td>
+<td align="right">11300</td>
+<td align="right">1.77</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Post Oak</td>
+<td align="right">2</td>
+<td align="right">200</td>
+<td align="right">11900</td>
+<td align="right">1.68</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Post Oak</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">11300</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Red Maple</td>
+<td align="right">10</td>
+<td align="right">1000</td>
+<td align="right">11900</td>
+<td align="right">8.40</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Red Maple</td>
+<td align="right">12</td>
+<td align="right">1200</td>
+<td align="right">11300</td>
+<td align="right">10.62</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Red Oak</td>
+<td align="right">1</td>
+<td align="right">100</td>
+<td align="right">11900</td>
+<td align="right">0.84</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Red Oak</td>
+<td align="right">5</td>
+<td align="right">500</td>
+<td align="right">11300</td>
+<td align="right">4.42</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Short Leaf Pine</td>
+<td align="right">27</td>
+<td align="right">2700</td>
+<td align="right">11900</td>
+<td align="right">22.69</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Short Leaf Pine</td>
+<td align="right">6</td>
+<td align="right">600</td>
+<td align="right">11300</td>
+<td align="right">5.31</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Sourwood</td>
+<td align="right">11</td>
+<td align="right">1100</td>
+<td align="right">11900</td>
+<td align="right">9.24</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Sourwood</td>
+<td align="right">17</td>
+<td align="right">1700</td>
+<td align="right">11300</td>
+<td align="right">15.04</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Southern Sugar Maple</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">11900</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Southern Sugar Maple</td>
+<td align="right">6</td>
+<td align="right">600</td>
+<td align="right">11300</td>
+<td align="right">5.31</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">White Oak</td>
+<td align="right">53</td>
+<td align="right">5300</td>
+<td align="right">11900</td>
+<td align="right">44.54</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">White Oak</td>
+<td align="right">27</td>
+<td align="right">2700</td>
+<td align="right">11300</td>
+<td align="right">23.89</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Yellow Poplar</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">11900</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Yellow Poplar</td>
+<td align="right">17</td>
+<td align="right">1700</td>
+<td align="right">11300</td>
+<td align="right">15.04</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>master_tbl &lt;- merge(basal_species_by_plot,
                     density_table,
                     by.x = c(&quot;Plot&quot;, &quot;Species&quot;), 
                     by.y = c(&quot;Plot&quot;, &quot;Species&quot;),
                     all = TRUE)%&gt;%
-  mutate(IV = (RA-RD)/2)
-  
-master_tbl</code></pre>
-<pre><code>##    Plot              Species      sum_ba total_BA           RA Freq   di
-## 1     1       American Beech          NA       NA           NA    0    0
-## 2     1         Black Cherry    0.785400 1658.425  0.047358183    1  100
-## 3     1             Blackgum    2.269806 1658.425  0.136865149    1  100
-## 4     1              Dogwood          NA       NA           NA    0    0
-## 5     1    Mockernut Hickory   47.324277 1658.425  2.853567314   10 1000
-## 6     1       Pignut Hickory    9.935310 1658.425  0.599081014    3  300
-## 7     1             Post Oak    2.717484 1658.425  0.163859313    2  200
-## 8     1            Red Maple   38.559213 1658.425  2.325049992   10 1000
-## 9     1              Red Oak    3.463614 1658.425  0.208849587    1  100
-## 10    1      Short Leaf Pine  348.741162 1658.425 21.028453980   27 2700
-## 11    1             Sourwood   48.743887 1658.425  2.939167230   11 1100
-## 12    1 Southern Sugar Maple          NA       NA           NA    0    0
-## 13    1            White Oak 1155.884961 1658.425 69.697748237   53 5300
-## 14    1        Yellow Poplar          NA       NA           NA    0    0
-## 15    2       American Beech   32.980910 2350.557  1.403110450    9  900
-## 16    2         Black Cherry          NA       NA           NA    0    0
-## 17    2             Blackgum    9.809646 2350.557  0.417332845    2  200
-## 18    2              Dogwood    0.125664 2350.557  0.005346137    1  100
-## 19    2    Mockernut Hickory  175.784301 2350.557  7.478410794    9  900
-## 20    2       Pignut Hickory   14.971687 2350.557  0.636942143    2  200
-## 21    2             Post Oak          NA       NA           NA    0    0
-## 22    2            Red Maple  153.190306 2350.557  6.517192008   12 1200
-## 23    2              Red Oak  174.211537 2350.557  7.411500544    5  500
-## 24    2      Short Leaf Pine  153.184416 2350.557  6.516941408    6  600
-## 25    2             Sourwood   37.414493 2350.557  1.591728857   17 1700
-## 26    2 Southern Sugar Maple   11.466840 2350.557  0.487835032    6  600
-## 27    2            White Oak 1125.562631 2350.557 47.884934418   27 2700
-## 28    2        Yellow Poplar  461.854470 2350.557 19.648725364   17 1700
-##    total_plot_density         RD         IV
-## 1               11900  0.0000000         NA
-## 2               11900  0.8403361 -0.3964890
-## 3               11900  0.8403361 -0.3517355
-## 4               11900  0.0000000         NA
-## 5               11900  8.4033613 -2.7748970
-## 6               11900  2.5210084 -0.9609637
-## 7               11900  1.6806723 -0.7584065
-## 8               11900  8.4033613 -3.0391557
-## 9               11900  0.8403361 -0.3157433
-## 10              11900 22.6890756 -0.8303108
-## 11              11900  9.2436975 -3.1522651
-## 12              11900  0.0000000         NA
-## 13              11900 44.5378151 12.5799666
-## 14              11900  0.0000000         NA
-## 15              11300  7.9646018 -3.2807457
-## 16              11300  0.0000000         NA
-## 17              11300  1.7699115 -0.6762893
-## 18              11300  0.8849558 -0.4398048
-## 19              11300  7.9646018 -0.2430955
-## 20              11300  1.7699115 -0.5664847
-## 21              11300  0.0000000         NA
-## 22              11300 10.6194690 -2.0511385
-## 23              11300  4.4247788  1.4933609
-## 24              11300  5.3097345  0.6036034
-## 25              11300 15.0442478 -6.7262595
-## 26              11300  5.3097345 -2.4109497
-## 27              11300 23.8938053 11.9955646
-## 28              11300 15.0442478  2.3022388</code></pre>
+  mutate(IV = (RBA-RD)/2)%&gt;%
+  select(Plot, Species, RBA, RD, IV)
+kable(master_tbl, caption = &quot;Importance Value (IV)&quot;, col.names = c(&quot;Plot&quot;, &quot;Species&quot;, &quot;Relative Abundance (%)&quot;, &quot;Relative Density (%)&quot;, &quot;IMPORTANCE VALUE&quot;), digits = 2)</code></pre>
+<table style="width:100%;">
+<caption>Importance Value (IV)</caption>
+<colgroup>
+<col width="5%" />
+<col width="24%" />
+<col width="26%" />
+<col width="24%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Plot</th>
+<th align="left">Species</th>
+<th align="right">Relative Abundance (%)</th>
+<th align="right">Relative Density (%)</th>
+<th align="right">IMPORTANCE VALUE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">American Beech</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Black Cherry</td>
+<td align="right">0.05</td>
+<td align="right">0.84</td>
+<td align="right">-0.40</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Blackgum</td>
+<td align="right">0.14</td>
+<td align="right">0.84</td>
+<td align="right">-0.35</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Dogwood</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Mockernut Hickory</td>
+<td align="right">2.85</td>
+<td align="right">8.40</td>
+<td align="right">-2.77</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Pignut Hickory</td>
+<td align="right">0.60</td>
+<td align="right">2.52</td>
+<td align="right">-0.96</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Post Oak</td>
+<td align="right">0.16</td>
+<td align="right">1.68</td>
+<td align="right">-0.76</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Red Maple</td>
+<td align="right">2.33</td>
+<td align="right">8.40</td>
+<td align="right">-3.04</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Red Oak</td>
+<td align="right">0.21</td>
+<td align="right">0.84</td>
+<td align="right">-0.32</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Short Leaf Pine</td>
+<td align="right">21.03</td>
+<td align="right">22.69</td>
+<td align="right">-0.83</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Sourwood</td>
+<td align="right">2.94</td>
+<td align="right">9.24</td>
+<td align="right">-3.15</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Southern Sugar Maple</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">White Oak</td>
+<td align="right">69.70</td>
+<td align="right">44.54</td>
+<td align="right">12.58</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Yellow Poplar</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">American Beech</td>
+<td align="right">1.40</td>
+<td align="right">7.96</td>
+<td align="right">-3.28</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Black Cherry</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Blackgum</td>
+<td align="right">0.42</td>
+<td align="right">1.77</td>
+<td align="right">-0.68</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Dogwood</td>
+<td align="right">0.01</td>
+<td align="right">0.88</td>
+<td align="right">-0.44</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Mockernut Hickory</td>
+<td align="right">7.48</td>
+<td align="right">7.96</td>
+<td align="right">-0.24</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Pignut Hickory</td>
+<td align="right">0.64</td>
+<td align="right">1.77</td>
+<td align="right">-0.57</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Post Oak</td>
+<td align="right">NA</td>
+<td align="right">0.00</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Red Maple</td>
+<td align="right">6.52</td>
+<td align="right">10.62</td>
+<td align="right">-2.05</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Red Oak</td>
+<td align="right">7.41</td>
+<td align="right">4.42</td>
+<td align="right">1.49</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Short Leaf Pine</td>
+<td align="right">6.52</td>
+<td align="right">5.31</td>
+<td align="right">0.60</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Sourwood</td>
+<td align="right">1.59</td>
+<td align="right">15.04</td>
+<td align="right">-6.73</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Southern Sugar Maple</td>
+<td align="right">0.49</td>
+<td align="right">5.31</td>
+<td align="right">-2.41</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">White Oak</td>
+<td align="right">47.88</td>
+<td align="right">23.89</td>
+<td align="right">12.00</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Yellow Poplar</td>
+<td align="right">19.65</td>
+<td align="right">15.04</td>
+<td align="right">2.30</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>S_1 &lt;- n_distinct(filter(basal_area_dat, Plot == 1)$Species)
+
+S_2 &lt;- n_distinct(filter(basal_area_dat, Plot == 2)$Species)
+
+total_trees_1 &lt;- sum(filter(density_table, Plot == 1)$Freq)
+total_trees_2 &lt;- sum(filter(density_table, Plot == 2)$Freq)
+
+div_tbl &lt;- density_table %&gt;%
+  select(Plot, Species, Freq)%&gt;%
+  filter(Freq != 0)%&gt;%
+  mutate(total_trees_by_plot = ifelse(Plot == 1, total_trees_1, total_trees_2),
+         pi = Freq/total_trees_by_plot,
+         pilnpi = pi*log(pi))
+kable(div_tbl, caption = &quot;DIVERSITY TABLE USED TO CALCULATE SHANNON DIVERSITY INDEX &amp; SORENSON SIMILARITY INDEX&quot;, col.names = c(&quot;Plot&quot;, &quot;Species&quot;, &quot;# Stems&quot;,&quot;# Stems/Plot&quot;, &quot;pi&quot;, &quot;piln(pi)&quot;), digits = 2)</code></pre>
+<table>
+<caption>DIVERSITY TABLE USED TO CALCULATE SHANNON DIVERSITY INDEX &amp;
+SORENSON SIMILARITY INDEX</caption>
+<thead>
+<tr class="header">
+<th align="left">Plot</th>
+<th align="left">Species</th>
+<th align="right"># Stems</th>
+<th align="right"># Stems/Plot</th>
+<th align="right">pi</th>
+<th align="right">piln(pi)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">American Beech</td>
+<td align="right">9</td>
+<td align="right">113</td>
+<td align="right">0.08</td>
+<td align="right">-0.20</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Black Cherry</td>
+<td align="right">1</td>
+<td align="right">119</td>
+<td align="right">0.01</td>
+<td align="right">-0.04</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Blackgum</td>
+<td align="right">1</td>
+<td align="right">119</td>
+<td align="right">0.01</td>
+<td align="right">-0.04</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Blackgum</td>
+<td align="right">2</td>
+<td align="right">113</td>
+<td align="right">0.02</td>
+<td align="right">-0.07</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Dogwood</td>
+<td align="right">1</td>
+<td align="right">113</td>
+<td align="right">0.01</td>
+<td align="right">-0.04</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Mockernut Hickory</td>
+<td align="right">10</td>
+<td align="right">119</td>
+<td align="right">0.08</td>
+<td align="right">-0.21</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Mockernut Hickory</td>
+<td align="right">9</td>
+<td align="right">113</td>
+<td align="right">0.08</td>
+<td align="right">-0.20</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Pignut Hickory</td>
+<td align="right">3</td>
+<td align="right">119</td>
+<td align="right">0.03</td>
+<td align="right">-0.09</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Pignut Hickory</td>
+<td align="right">2</td>
+<td align="right">113</td>
+<td align="right">0.02</td>
+<td align="right">-0.07</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">Post Oak</td>
+<td align="right">2</td>
+<td align="right">119</td>
+<td align="right">0.02</td>
+<td align="right">-0.07</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Red Maple</td>
+<td align="right">10</td>
+<td align="right">119</td>
+<td align="right">0.08</td>
+<td align="right">-0.21</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Red Maple</td>
+<td align="right">12</td>
+<td align="right">113</td>
+<td align="right">0.11</td>
+<td align="right">-0.24</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Red Oak</td>
+<td align="right">1</td>
+<td align="right">119</td>
+<td align="right">0.01</td>
+<td align="right">-0.04</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Red Oak</td>
+<td align="right">5</td>
+<td align="right">113</td>
+<td align="right">0.04</td>
+<td align="right">-0.14</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Short Leaf Pine</td>
+<td align="right">27</td>
+<td align="right">119</td>
+<td align="right">0.23</td>
+<td align="right">-0.34</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Short Leaf Pine</td>
+<td align="right">6</td>
+<td align="right">113</td>
+<td align="right">0.05</td>
+<td align="right">-0.16</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Sourwood</td>
+<td align="right">11</td>
+<td align="right">119</td>
+<td align="right">0.09</td>
+<td align="right">-0.22</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Sourwood</td>
+<td align="right">17</td>
+<td align="right">113</td>
+<td align="right">0.15</td>
+<td align="right">-0.28</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">Southern Sugar Maple</td>
+<td align="right">6</td>
+<td align="right">113</td>
+<td align="right">0.05</td>
+<td align="right">-0.16</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="left">White Oak</td>
+<td align="right">53</td>
+<td align="right">119</td>
+<td align="right">0.45</td>
+<td align="right">-0.36</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="left">White Oak</td>
+<td align="right">27</td>
+<td align="right">113</td>
+<td align="right">0.24</td>
+<td align="right">-0.34</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Yellow Poplar</td>
+<td align="right">17</td>
+<td align="right">113</td>
+<td align="right">0.15</td>
+<td align="right">-0.28</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>H1 &lt;- -sum(filter(div_tbl, Plot == 1)$pilnpi)
+H2 &lt;- -sum(filter(div_tbl, Plot == 2)$pilnpi)
+
+j_n &lt;- sum(duplicated(div_tbl$Species)) # 8 
+Cn &lt;- (2*j_n)/(S_1+S_2)</code></pre>
+<pre class="r"><code>idx_tbl &lt;- data.frame(Plot = numeric(),
+                     species = numeric(),
+                     shannon_div_idx = numeric())
+idx_tbl &lt;- rbind(idx_tbl, c(1, S_1, H1), c(2, S_2, H2))
+kable(idx_tbl, caption = &quot;SUMMARY&quot;, col.names = c(&quot;Plot&quot;, &quot;Species Richess (# species)&quot;, &quot;Shannon Diversity Index (H&#39;)&quot;), digits = 2)</code></pre>
+<table>
+<caption>SUMMARY</caption>
+<thead>
+<tr class="header">
+<th align="right">Plot</th>
+<th align="right">Species Richess (# species)</th>
+<th align="right">Shannon Diversity Index (H’)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">10</td>
+<td align="right">1.62</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">12</td>
+<td align="right">2.19</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SORENSEN SIMILARITY INDEX = 0.73</strong><br />
+** Lower Abundance Values for Common Species in Sites 1 and 2 (Jn) =
+8**<br />
+** Total Abundance for Sites 1 and 2 = 22**</p>
 </div>
 
 

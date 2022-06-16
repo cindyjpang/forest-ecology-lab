@@ -3,21 +3,27 @@ title: 'Forest Lab '
 author: "Cindy J. Pang"
 date: "`r Sys.Date()`"
 output:
-  pdf_document: default
+  word_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 library(readxl)
 library(dplyr)
 library(knitr)
+library(tinytex)
+library(ggplot2)
+library(viridis)
+library(hrbrthemes)
+library(RColorBrewer)
+library(jcolors)
 
 basal_area_dat <- read_xlsx("forest_data.xlsx", sheet = "Basal Area")%>%
   rename(dbh = "DBH (cm)",
          basal_area = "Basal Area, m2/ha")%>%
   mutate(Species = ifelse(Species == "pignut hickory", "Pignut Hickory", Species),
          Species = ifelse(Species == "Red maple", "Red Maple", Species))
-
 ```
 
 ### Basal Area 
@@ -41,17 +47,21 @@ basal_species_by_plot <- basal_species_by_plot%>%
 
 kable(basal_species_by_plot, caption = "BASAL AREA", col.names = c("Plot", "Species", "Basal Area (m2/ha)", "Total Plot Basal Area (m2/ha)", "Relative Abundance (%)"), digits = 2)
 ```
+```{r Basal Area Plot}
+rba_plt <- basal_species_by_plot %>%
+  mutate(Plot = ifelse(Plot == 1, "South/Dry", "North/Wet"))
+nb.cols <- 14
+rba_colors <- colorRampPalette(brewer.pal(14, "Set1"))(nb.cols)
 
-
-
-```{r plot summary, include = FALSE}
-
-#sanity check 
-basal_plot_summary <- basal_area_dat %>%
-  group_by(Plot)%>%
-  summarize(plot_sum = sum(basal_area))
-kable(basal_plot_summary,col.names = c("Plot", "Basal Area (m^2/ha)"), caption = "Basal Area by Site")
+ggplot(rba_plt, aes(fill = Species, x = Plot, y = RBA))+
+  geom_bar(position = "stack", stat = "identity") +
+    ggtitle("") +
+    theme_ipsum() +
+    xlab("")+
+  ylab("Relative Abundance (%)")+
+  scale_fill_manual(values = rba_colors)
 ```
+
 
 ### Density 
 
@@ -75,6 +85,10 @@ density_table <- table(basal_area_dat$Plot, basal_area_dat$Species)
 kable(density_table, caption = "DENSITY", col.names = c("Plot", "Species", "# Stems", "Species Density (stems/ha)", "Total Site Density (stems/ha)", "Relative Density (%)"), digits = 2)
  
 ```
+```{r relative density plot}
+
+```
+
 
 ```{r combine}
 master_tbl <- merge(basal_species_by_plot,
@@ -82,9 +96,14 @@ master_tbl <- merge(basal_species_by_plot,
                     by.x = c("Plot", "Species"), 
                     by.y = c("Plot", "Species"),
                     all = TRUE)%>%
-  mutate(IV = (RBA-RD)/2)%>%
+  mutate(IV = (RBA+RD)/2)%>%
+  filter(Freq != 0)
+
+iv_tbl <- master_tbl%>%
   select(Plot, Species, RBA, RD, IV)
-kable(master_tbl, caption = "Importance Value (IV)", col.names = c("Plot", "Species", "Relative Abundance (%)", "Relative Density (%)", "IMPORTANCE VALUE"), digits = 2)
+kable(iv_tbl, caption = "Importance Value (IV)", col.names = c("Plot", "Species", "Relative Abundance (%)", "Relative Density (%)", "IMPORTANCE VALUE"), digits = 2)
+
+
 ```
 ```{r}
 S_1 <- n_distinct(filter(basal_area_dat, Plot == 1)$Species)
@@ -113,10 +132,61 @@ Cn <- (2*j_n)/(S_1+S_2)
 idx_tbl <- data.frame(Plot = numeric(),
                      species = numeric(),
                      shannon_div_idx = numeric())
-idx_tbl <- rbind(idx_tbl, c(1, S_1, H1), c(2, S_2, H2))
-kable(idx_tbl, caption = "SUMMARY", col.names = c("Plot", "Species Richess (# species)", "Shannon Diversity Index (H')"), digits = 2)
+idx_tbl <- rbind(idx_tbl, c(1, S_1, H1), c(2, S_2, H2))%>%
+  rename(Plot = c.1..2.,
+         Species = c.10..12.,
+         Shannon_Idx = c.1.61505838480761..2.18750584362665.)
+
+summary_by_plot <- basal_area_dat %>%
+  group_by(Plot)%>%
+  summarize(mean_basal_area = mean(basal_area))
+mean_plot_density <- master_tbl %>%
+  group_by(Plot) %>%
+  summarise(mean_plot_density = mean(di))
+idx_tbl <- idx_tbl %>%
+   merge(summary_by_plot, by = "Plot", all = TRUE) %>%
+   merge(mean_plot_density, by = "Plot", all = TRUE)
+kable(idx_tbl, caption = "SUMMARY - SITE", col.names = c("Plot", "Total Species Richness", "Shannon Diversity Index","Mean Basal Area (m2/ha)", "Mean Plot Density (stems/ha)"), digits = 2)
+
+```
+
+```{r Summary - Species}
+species_ba <- basal_area_dat %>%
+  group_by(Species)%>%
+  summarise(mean_sp_ba = mean(basal_area))
+species_mast <- master_tbl %>%
+  group_by(Species)%>%
+  summarise(mean_sp_density = mean(di), 
+            mean_RD = mean(RD), 
+            mean_RBA = mean(RBA), 
+            mean_IV = mean(IV))
+summary_sp <- merge(species_ba,
+                    species_mast, 
+                    by = "Species", 
+                    all = TRUE)
+kable(summary_sp, caption = "SUMMARY - SPECIES", col.names = c("Species", "Mean Species Basal Area (m2/ha)", "Mean Species Density", "Mean Species Relative Density", "Mean Species Relative Basal Area", "Mean Species Importance Value"), digits = 2)
+
+
 
 ```
 **SORENSEN SIMILARITY INDEX = `r round(Cn, 2)`**  
-** Lower Abundance Values for Common Species in Sites 1 and 2 (Jn) = `r j_n`**  
-** Total Abundance for Sites 1 and 2 = `r S_1+S_2`**
+**Lower Abundance Values for Common Species in Sites 1 and 2 (Jn) = `r j_n`**  
+**Total Abundance for Sites 1 and 2 = `r S_1+S_2`**
+```{r overall summary, whole thing}
+species_ba_ov <- basal_area_dat %>%
+  group_by(Species)%>%
+  summarise(sum_basal_area = sum(basal_area))
+species_density_ov <- master_tbl%>%
+  select(Species,Freq)%>%
+  group_by(Species)%>%
+  summarise(agg_counts = sum(Freq), 
+            density = agg_counts*100)
+
+
+summary <- data.frame(agg_unit = c("Plot Means Across All Plots", "Species Means"),
+    mean_ba = c(mean(total_basal_area_p1, total_basal_area_p2), mean(species_ba_ov$sum_basal_area)),
+                      mean_d = c(mean(density_sum_plot1, density_sum_plot2), sum(species_density_ov$density)/2), 
+                      mean_sp = c(mean(total_trees_1, total_trees_2), sum(species_density_ov$agg_counts)/2))
+kable(summary, caption = "Summary Across Plots and Species", col.names = c("","Basal Area", "Species Density", "# of Species"), digits = 2)
+
+```
